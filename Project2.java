@@ -38,6 +38,8 @@ import javax.swing.JTextField;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import org.sqlite.SQLiteConnection;
+
 
 
 class Background extends JPanel
@@ -119,10 +121,11 @@ class Home extends JFrame implements ActionListener,KeyListener,TableModelListen
 	TabPan1 tp=null;
 	Background b=null;
 	Register reg=null;
-	//Generation gen=null;
+	Generation gen=null;
 	 Connection connection=null;
+	 Statement stmt=null;
 	 int f=0,l=0;
-	 String m="";
+	 String m="",n="";
 	 int j=0;
 	Home()
 	{
@@ -158,13 +161,24 @@ class Home extends JFrame implements ActionListener,KeyListener,TableModelListen
 			reg.b2.addActionListener(this);
 			reg.b1.addKeyListener(this);
 			reg.b2.addKeyListener(this);
-			
 			reg.setVisible(false);
+			
+			gen=new Generation("");
+			gen.setBounds(0,0,1500,1000);
+			//gen.b1.addActionListener(this);
+			gen.setVisible(false);
+		
+		gen.jb1.addActionListener(this);
+		gen.jb1.addKeyListener(this);
+		tp.a.b1.addActionListener(this);
+			 
 			
 		
 		add(jp);
 		add(tp);
 		add(reg);
+		add(gen);
+		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
@@ -227,14 +241,46 @@ class Home extends JFrame implements ActionListener,KeyListener,TableModelListen
 			 int f5=0;
 			 if(s.equals("Login"))
 			 {
-			 jp.setVisible(false);
-			 b.setVisible(false);
-			 tp.setVisible(false);
+				 String uname=jp.tf1.getText();
+				 String pass=jp.tf2.getText();
+				 if(uname.equalsIgnoreCase("admin"))
+				 {
+					 if(pass.equalsIgnoreCase("admin"))
+					 {
+						 jp.setVisible(false);
+						 b.setVisible(false);
+						 tp.setVisible(true); 
+					 }
+					 else
+					 {
+						 jp.pl.setVisible(true);
+			 			   jp.ul.setVisible(false);
+					 }
+				 }
+				 else
+				 {
+					 jp.pl.setVisible(false);
+		 			   jp.ul.setVisible(true);
+				 }
+			 
 			
 			 }
 			 else if(s.equalsIgnoreCase("close"))
 			 {
 				 System.exit(0);
+			 }
+			 else if(s.equalsIgnoreCase("ok"))
+			 {
+				 jp.setVisible(true);
+				 reg.setVisible(false);
+				 gen.setVisible(false); 
+				 
+			 }
+			 else if(s.equalsIgnoreCase("Cancel"))
+			 {
+				 jp.setVisible(true);
+				 reg.setVisible(false);
+				 
 			 }
 			 else if (s.equals("Sign Up"))
 			 {
@@ -242,17 +288,39 @@ class Home extends JFrame implements ActionListener,KeyListener,TableModelListen
 				 b.setVisible(false);
 				 reg.setVisible(true);
 			 }
+			 else if(s.equalsIgnoreCase("Schedule"))
+			 {
+				 System.out.println("Hello");
+				 try
+				 {
+					 System.out.println("Hello");
+					 String doctor=tp.a.cdo.getSelectedItem();
+					 System.out.println(doctor);
+					 String sql = "UPDATE PATIENT SET Doctor='"+tp.a.cdo.getSelectedItem()+"',Date='"+tp.a.c1.getSelectedItem()+"-"+tp.a.c2.getSelectedItem()+"-"+tp.a.c3.getSelectedItem()+"',Time='"+tp.a.c4.getSelectedItem()+"',Reason='"+tp.a.c5.getSelectedItem()+"' where PID='"+tp.a.cid.getSelectedItem()+"'"; 
+						stmt= connection.createStatement();
+						stmt.executeUpdate(sql);
+						 System.out.println("World");
+						stmt.close();
+						
+				 }
+				 catch(Exception e)
+				 {
+					 e.printStackTrace();
+				 }
+			 }
 			 else if (s.equals("Register"))
 			 {
 				 m=reg.tf2.getText();
+				 n=reg.tf1.getText();
 					
-				 if(m.length()<10)
+				 if(m.length()<10 || m.length()>10)
 				 {
 					 reg.val4.setVisible(true);
 					 reg.val5.setVisible(false);
 					 reg.val1.setVisible(false);
 					 reg.val2.setVisible(false);
 					 reg.val3.setVisible(false);
+					 f5=1;
 					 
 				 }
 				 else
@@ -276,6 +344,37 @@ class Home extends JFrame implements ActionListener,KeyListener,TableModelListen
 
 				     }
 				    }
+				 if(reg.tf1.getText().length()<3)
+				 {
+					 reg.val1.setVisible(true);
+					 reg.val4.setVisible(false);
+					 reg.val5.setVisible(false);
+					 reg.val2.setVisible(false);
+					 reg.val3.setVisible(false);
+					 f5=1;
+				    
+				 }
+				 else
+				 {
+					 for(int i=0;i<n.length();i++)
+					 {
+						int a=(n.charAt(i));
+						// System.out.println(a);
+						if(a>=48 && a<=57)
+						{  
+							reg.val4.setVisible(false);
+							 reg.val5.setVisible(false);
+							 reg.val1.setVisible(false);
+							 reg.val2.setVisible(true);
+							 reg.val3.setVisible(false);
+						//	 gen.setVisible(false);
+							 f5=1;
+						}
+						
+					 
+
+				     }
+				 }
 				 int j;
 				 try
 				 {
@@ -283,6 +382,11 @@ class Home extends JFrame implements ActionListener,KeyListener,TableModelListen
 			         int i=0;
 			         if(f5==0)
 			         {
+			        	 reg.val1.setVisible(false);
+			        	 reg.val2.setVisible(false);
+			        	 reg.val3.setVisible(false);
+			        	 reg.val4.setVisible(false);
+			        	 reg.val5.setVisible(false);
 			        	 try
 			       	  {
 			       		   msg1=reg.tf1.getText().substring(0,3);
@@ -292,28 +396,45 @@ class Home extends JFrame implements ActionListener,KeyListener,TableModelListen
 			       		  reg.val1.setVisible(true);
 			       	  } 
 			        	 String s2=reg.c2.getSelectedItem();
-			    	      System.out.println(s2);
+			    	     // System.out.println(s2);
 						String msg2=reg.c2.getSelectedItem()+msg1+reg.c3.getSelectedItem();
 						//System.out.println("user:"+msg1);
 						//System.out.println("user:"+msg2);
-						String sql = "INSERT INTO REGISTER(NAME,DOB,ADDRESS,GENDER,CNO,TYPE,UNAME,PASSWORD) VALUES(reg.tf1.getText(),reg.c2.getSelectedItem()+reg.c1.getSelectedItem+reg.c3.getSelectedItem,reg.ta.getText(),reg.cbg.getSelectedCheckbox().getLabel(),reg.tf2.getText(),reg.cbg1.getSelectedCheckbox().getLabel(),msg1,msg2)"; 
+						gen.username1.setText(msg1);
+						gen.password1.setText(msg2);
+						String sql = "INSERT INTO REGISTER(NAME,DOB,ADDRESS,GENDER,CNO,TYPE,UNAME,PASSWORD) VALUES(?,?,?,?,?,?,?,?)"; 
 						PreparedStatement pst= connection.prepareStatement(sql);
-						//pst.setString(1,reg.tf1.getText());
-						//pst.setString(2, reg.ta.getText());
+						pst.setString(1,reg.tf1.getText());
+						pst.setString(2,reg.c2.getSelectedItem()+reg.c1.getSelectedItem()+reg.c3.getSelectedItem());
+						pst.setString(3,reg.ta.getText() );
+						pst.setString(4, reg.cbg.getSelectedCheckbox().getLabel());
+					    pst.setString(5, reg.tf2.getText());
+					    pst.setString(6,reg.cbg1.getSelectedCheckbox().getLabel());
+					    pst.setString(7, msg1);
+					    pst.setString(8, msg2);
 						
 				     pst.execute();
-			        	 
+				     pst.close();
+				     reg.tf1.setText("");
+				     reg.ta.setText("");
+				     reg.tf2.setText("");
+				     
+			         reg.setVisible(false);
+			   		 jp.setVisible(false);
+			   		 gen.setVisible(true);
+				    
+				     System.out.println("hi"); 
 			         }
 					
 				        
-				     pst.close();
-				     System.out.println("hi");
+				    
 				  		
 				  	
 				 }
 				 catch(Exception e)
 				 {
 					 e.printStackTrace();
+					
 				 }
 			 }
 			
@@ -327,16 +448,23 @@ class Home extends JFrame implements ActionListener,KeyListener,TableModelListen
 class TabPan1 extends JPanel implements ActionListener,KeyListener
 {
 	JTabbedPane jtp1=null;
-	Order o=null;
+	Appt a=null;
+	Patient p=null;
+	Doctor d=null;
 	
 	TabPan1()
 	{
 		setLayout(null);
 		jtp1=new JTabbedPane();
-		o=new Order();
+		a=new Appt();
+		p=new Patient();
+		d=new Doctor();
 		jtp1.setBounds(0,0,1500,1000);
-		o.setBounds(0,0,1500,1000);
-		jtp1.addTab("ORDER LOG",o);
+		a.setBounds(0,0,1500,1000);
+		p.setBounds(0,0,1500,1000);
+		jtp1.addTab("SCHEDULE APPOINTMENT",a);
+		jtp1.addTab("PATIENT INFO",p);
+		jtp1.addTab("DOCTOR APPOINTMENTS",d);
 		add(jtp1);
 	}
 	private void setDefaultCloseOperation(int exitOnClose) {
@@ -373,7 +501,7 @@ class TabPan1 extends JPanel implements ActionListener,KeyListener
 class Register extends JPanel implements ItemListener
 {
 	
-	
+	private BufferedImage image,image1;
 	JLabel l3,l4,l6,l5,l7,age,store,val1,val2,val3,val4,val5,cno,stype;
 	JButton b1,b2;
 	JTextField tf1,tf2;
@@ -391,6 +519,11 @@ class Register extends JPanel implements ItemListener
 		
 		//this.settitle("HOSPITAL MANAGEMENT SYSTEM");
 		setLayout(null);
+		try {     
+		    image = ImageIO.read(new File("E:\\images\\i5.jpg"));
+		    
+		 } catch (IOException ex) {       }
+
 		f=new Font("Arial",Font.BOLD,16);
 		f1=new Font("Arial",Font.BOLD,30);
 		f2=new Font("Arial",Font.PLAIN,16);
@@ -477,7 +610,7 @@ class Register extends JPanel implements ItemListener
 		val5.setVisible(false);
 		add(val5);
 		
-		val1=new JLabel("Please enter min two character in name field");
+		val1=new JLabel("Please enter min three character in name field");
 		val1.setBounds(350,50,300,100);
 		add(val1);
 		val1.setVisible(false);
@@ -549,7 +682,12 @@ class Register extends JPanel implements ItemListener
 		  
 	}*/
 	
-
+	protected void paintComponent(Graphics g) {
+		  
+		   super.paintComponent(g);
+		   g.drawImage(image,650,100,650,375,null);
+		   
+		  }
 	
 
 	public void itemStateChanged(ItemEvent ie) {
@@ -601,34 +739,613 @@ class Register extends JPanel implements ItemListener
 	}
 }
 
-class Order extends JPanel
+class Appt extends JPanel implements KeyListener, ItemListener
 {
-	JButton order,home,logout;
-	JLabel store;
-	Font f;
-	Order()
+	JLabel id,name,age,cno,title,pname,page,doctor,doa,toa,rov;
+	Choice cid,cdo,c1,c2,c3,c4,c5;
+	JButton b1,b2;
+	 Connection connection=null;
+	 Statement stmt=null,stmt1=null,stmt2=null;
+	
+	Font f,f1,f2;
+	BufferedImage image,image1;
+	String a,b,c;
+	Appt()
 	{
 		setLayout(null);
+		this.setTitle("HOSPITAL MANAGEMENT SYSTEM");
+		f=new Font("Arial",Font.PLAIN,28);
+		f1=new Font("Arial",Font.PLAIN,25);
+		f2=new Font("Arial",Font.PLAIN,18);
+		connection= SqliteConnection.dbConnector();
 		
-		f=new Font("Arial",Font.PLAIN,30);
 		
-		logout=new JButton("Logout");
-        logout.setBounds(1200,10,80,40);
-        add(logout);
+		title=new JLabel("SCHEDULE APPOINTMENT");
+		title.setBounds(540, 5, 400, 40);title.setFont(f);title.setForeground(Color.BLUE);
+		add(title);
+		
+		id=new JLabel("Patient Id:");
+		id.setBounds(50,50,200,50);id.setFont(f1);
+		add(id);
+		
+		name=new JLabel("Patient Name:");
+		name.setBounds(50,150,200,50);name.setFont(f1);
+		add(name);
+		
+		age=new JLabel("Patient Age:");
+		age.setBounds(50,250,200,50);age.setFont(f1);
+		add(age);
+		
+		doctor=new JLabel("Doctor:");
+		doctor.setBounds(50,350,200,50); doctor.setFont(f1);
+		add(doctor);
+		
+		doa=new JLabel("Date:");
+		doa.setBounds(50,440,200,50); doa.setFont(f1);
+		add(doa);
+		
+		toa=new JLabel("Time:");
+		toa.setBounds(660,440,100,50); toa.setFont(f1);
+		add(toa);
+		
+		rov=new JLabel("Reason of Visit:");
+		rov.setBounds(50,500,200,50);
+		rov.setFont(f1);
+		add(rov);
+		
+		/*
+		reset=new JButton("Reset");
+		reset.setBounds(175, 350, 200,40);reset.setFont(f);
+		add(reset);
+		
+		id1=new JTextField();
+		id1.setBounds(300,60,200,40);
+		add(id1);
+		*/
+		cid=new Choice();
+		cid.setBounds(300,55,150,40);cid.setFont(f1);
+		add(cid);
+		
+		pname=new JLabel("Name");
+		pname.setBounds(300,155,200,40);pname.setFont(f1);
+		add(pname);
+		
+		page=new JLabel("Age");
+	page.setBounds(300,255,200,40);page.setFont(f1);
+		add(page);
+		
+		cdo=new Choice();
+		cdo.setBounds(300,355,150,40);cdo.setFont(f1);
+		add(cdo);
+		
+		c1=new Choice();
+		c1.setBounds(300,455,100,30);
+		c2=new Choice();
+		c2.setBounds(410,455,100,30);
+		c3=new Choice();
+		c3.setBounds(520,455,100,30);
+		c4=new Choice();
+		c5=new Choice();
+		c5.setBounds(300,510,200,100);
+		c4.setBounds(770,455,200,50);
+		c1.setFont(f2);
+		c2.setFont(f2);
+		c3.setFont(f2);
+		c4.setFont(f2);
+		c5.setFont(f2);
 		
 		
-		order=new JButton("Counter Orders");
-		order.setBounds(300,200,300,65);
-		order.setFont(f);
+		b1=new JButton("Schedule");
+		b1.setBounds(50,580,200,50);
+		b1.setFont(f1);
+		add(b1);
+		
+		b2=new JButton("Cancel");
+		b2.setBounds(300,580,200,50);
+		b2.setFont(f1);
+		add(b2);
+		
+		
+		add(c1);
+		add(c2);
+		add(c3);
+		add(c4);
+		add(c5);
+		
+		
+		
+		cid.addItemListener(this);
+		c1.addItemListener(this);
+		c3.addItemListener(this);
+		c4.addItemListener(this);
+		cdo.addItemListener(this);
+		c5.addItemListener(this);
+		c1.add("Jan");
+		c1.add("Feb"); 
+		c1.add("March");
+		c1.add("April");
+		c1.add("May");
+		c1.add("June");
+		c1.add("July");
+		c1.add("Aug");
+		c1.add("Sept");
+		c1.add("Oct"); 
+		c1.add("Nov"); 
+		c1.add("Dec");
+		
+		c4.add("10:00"); 
+		c4.add("11:00"); 
+		c4.add("12:00"); 
+		c4.add("13:00");
+		c4.add("14:00");
+		c4.add("15:00");
+		c4.add("16:00");
+		c4.add("17:00");
+		
+		c5.add("General Consultation");
+		c5.add("Surgery-related");
+		c5.add("Critical");
+		
+		
+		
+		for(int i=2017;i<=2020;i++)
+		{
+			c3.add(""+i);
+		}
+		try
+		{
+			stmt=connection.createStatement();
+			stmt2=connection.createStatement();
+			ResultSet rs=stmt.executeQuery("Select PID from PATIENT;");
+			ResultSet rs2=stmt2.executeQuery("select NAME from REGISTER where TYPE='Doctor'");
+			while(rs.next())
+			{
+				int pid=rs.getInt("PID");
+				cid.add(""+pid);
+				
+			}
+			while(rs2.next())
+			{
+				String dname=rs2.getString("NAME");
+				cdo.add(""+dname);
+				
+			}
+			rs.close();
+			stmt.close();
+			rs2.close();
+			stmt2.close();
+			
+		}
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		cid.select(0);
+		try
+		{
+			int pid=Integer.parseInt(cid.getSelectedItem());
+			//System.out.println(""+pid);
+			stmt1=connection.createStatement();
+			ResultSet rs2=stmt1.executeQuery("select PNAME,PAGE from PATIENT where PID='"+cid.getSelectedItem()+"'");
+			System.out.println(""+pid);
+			while(rs2.next())
+			{
+			String  name = rs2.getString(1);
+			System.out.println(name);
+	         String age  = rs2.getString(2);
+	         System.out.println(""+age);
+	         pname.setText(name);
+	         page.setText(""+age);
+			}
+			
+	        rs2.close();
+				stmt1.close();
+				
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+
+cid.addItemListener(new ItemListener() {
+			
+			
+			public void itemStateChanged(ItemEvent arg0) {
+				
+				int pid=Integer.parseInt(cid.getSelectedItem());
+				//System.out.println(""+pid);
+				try
+				{
+					System.out.println("hi");
+					stmt1=connection.createStatement();
+					ResultSet rs2=stmt1.executeQuery("select PNAME,PAGE from PATIENT where PID='"+cid.getSelectedItem()+"'");
+					while(rs2.next())
+					{
+					System.out.println(""+pid);
+					String  name = rs2.getString(1);
+					System.out.println(name);
+			         String age  = rs2.getString(2);
+			        System.out.println(""+age);
+			         pname.setText(name);
+			         page.setText(""+age);
+					}
+			        rs2.close();
+						stmt1.close();
+						
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+
+				}
+		});
+	}
+		
+		public void itemStateChanged(ItemEvent ie) {
+			
+			
+		    int val1=Integer.parseInt(c3.getSelectedItem());
+			String val=c1.getSelectedItem();
+			
+			
+			if(val.equalsIgnoreCase("jan") || val.equalsIgnoreCase("march") || val.equalsIgnoreCase("may") || 
+					val.equalsIgnoreCase("july") || val.equalsIgnoreCase("aug") || val.equalsIgnoreCase("oct") ||
+					val.equalsIgnoreCase("dec"))
+			{   
+				
+				for(int i=1;i<=31;i++)
+				{
+					c2.add(""+i);
+				}
+			}
+			else if(val1%4==0 && val.equalsIgnoreCase("feb") )
+			{
+							
+				System.out.println("LEAP");
+					for(int i=1;i<=29;i++)
+					{
+					c2.add(""+i);
+					}
+		
+			}
+			else if(val1%4!=0 && val.equalsIgnoreCase("feb"))
+			{
+				
+				
+				System.out.println("Not LEAP");
+					for(int i=1;i<=28;i++)
+					{
+					c2.add(""+i);
+					}
+			}
+			else 
+			{ 
+				
+				for(int i=1;i<=30;i++)
+				{
+					c2.add(""+i);
+				}
+			}
+		}
 	
-		home=new JButton("Home Delivery");
-		home.setBounds(650, 200, 300, 65);
-		home.setFont(f);
+
+
+
 	
-		add(order);add(home);//add(store);
+	
+	private void setTitle(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	
+	public void keyPressed(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	
+	public void keyReleased(KeyEvent ke) {
+		// TODO Auto-generated method stub
+		String msg=ke.getKeyCode()+"";
+	
+	}
+
+
+
+	
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }
+class Doctor extends JPanel implements ItemListener
+{
+	JLabel dname,cno,dcno,title;
+	Font f,f1,f2;
+	Choice c1;
+	Connection connection=null;
+	Statement stmt=null;
+	Doctor()
+	{
+		setLayout(null);
+		this.setTitle("HOSPITAL MANAGEMENT SYSTEM");
+		connection= SqliteConnection.dbConnector();
+		f=new Font("Arial",Font.PLAIN,28);
+		f1=new Font("Arial",Font.PLAIN,25);
+		f2=new Font("Arial",Font.PLAIN,18);
+		title=new JLabel("DOCTOR APPOINTMENTS");
+		title.setBounds(540, 5, 400, 40);title.setFont(f);title.setForeground(Color.BLUE);
+		add(title);
+		
+		dname=new JLabel("Doctor:");
+		dname.setBounds(50,50,200,50);dname.setFont(f1);
+		add(dname);
+		
+		c1=new Choice();
+		c1.setBounds(260,50,200,50);
+		c1.setFont(f1);
+		add(c1);
+		
+		cno=new JLabel("Contact Number:");
+		cno.setBounds(50,100,200,50);cno.setFont(f1);
+		add(cno);
+		
+		dcno=new JLabel("Contact");
+		dcno.setBounds(260,100,200,50);
+		dcno.setFont(f1);
+		add(dcno);
+	}
+	
+	private void setTitle(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void itemStateChanged(ItemEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}
+class Patient extends JPanel implements ItemListener
+{
+	JLabel id,name,age,cno,title,pname,page,doctor,doa,toa,rov,pdoctor,pdoa,ptoa,prov,pcno,upa;
+	Choice cid;
+	
+	 Connection connection=null;
+	 Statement stmt=null,stmt1=null;
+	
+	Font f,f1,f2;
+	BufferedImage image,image1;
+	
+	Patient()
+	{
+		setLayout(null);
+		this.setTitle("HOSPITAL MANAGEMENT SYSTEM");
+		f=new Font("Arial",Font.PLAIN,28);
+		f1=new Font("Arial",Font.PLAIN,25);
+		f2=new Font("Arial",Font.PLAIN,18);
+		connection= SqliteConnection.dbConnector();
+		
+		
+		title=new JLabel("PATIENT HISTORY");
+		title.setBounds(540, 5, 400, 40);title.setFont(f);title.setForeground(Color.BLUE);
+		add(title);
+		
+		id=new JLabel("Patient Id:");
+		id.setBounds(50,50,200,50);id.setFont(f1);
+		add(id);
+		
+		name=new JLabel("Patient Name:");
+		name.setBounds(50,100,200,50);name.setFont(f1);
+		add(name);
+		
+		age=new JLabel("Patient Age:");
+		age.setBounds(50,150,200,50);age.setFont(f1);
+		add(age);
+		
+		cno=new JLabel("Contact No:");
+		cno.setBounds(50,200,200,50); cno.setFont(f1);
+		add(cno);
+		
+		upa=new JLabel("Upcoming Appointment");
+		upa.setBounds(50,250,300,50); upa.setFont(f1);
+		add(upa);
+		
+		doctor=new JLabel("Doctor:");
+		doctor.setBounds(50,300,200,50); doctor.setFont(f1);
+		add(doctor);
+		
+		doa=new JLabel("Date:");
+		doa.setBounds(50,350,200,50); doa.setFont(f1);
+		add(doa);
+		
+		toa=new JLabel("Time:");
+		toa.setBounds(50,400,100,50); toa.setFont(f1);
+		add(toa);
+		
+		rov=new JLabel("Reason of Visit:");
+		rov.setBounds(50,450,200,50);
+		rov.setFont(f1);
+		add(rov);
+		
+		/*
+		reset=new JButton("Reset");
+		reset.setBounds(175, 350, 200,40);reset.setFont(f);
+		add(reset);
+		
+		id1=new JTextField();
+		id1.setBounds(300,60,200,40);
+		add(id1);
+		*/
+		cid=new Choice();
+		cid.setBounds(300,55,150,40);cid.setFont(f1);
+		add(cid);
+		
+		pname=new JLabel("Name");
+		pname.setBounds(300,105,200,40);pname.setFont(f1);
+		add(pname);
+		
+		page=new JLabel("Age");
+	page.setBounds(300,155,200,40);page.setFont(f1);
+		add(page);
+		
+		pcno=new JLabel("Patient Contact");
+		pcno.setBounds(300,205,300,40);
+		pcno.setFont(f1);
+		add(pcno);
+		
+	    pdoctor=new JLabel("Doctor Name:");
+		pdoctor.setBounds(300,300,200,50); pdoctor.setFont(f1);
+		add(pdoctor);
+		
+		pdoa=new JLabel("Date:");
+		pdoa.setBounds(300,350,300,50); pdoa.setFont(f1);
+		add(pdoa);
+		
+		ptoa=new JLabel("Time:");
+		ptoa.setBounds(300,400,100,50); ptoa.setFont(f1);
+		add(ptoa);
+		
+		prov=new JLabel("Reason of Visit:");
+		prov.setBounds(300,450,300,50);
+		prov.setFont(f1);
+		add(prov);
+		
+		
+		
+		
+		
+		
+		
+		
+		try
+		{
+			stmt=connection.createStatement();
+			
+			ResultSet rs=stmt.executeQuery("Select PID from PATIENT;");
+			
+			while(rs.next())
+			{
+				int pid=rs.getInt("PID");
+				cid.add(""+pid);
+				
+			}
+			
+			rs.close();
+			stmt.close();
+			
+			
+		}
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		cid.select(0);
+		try
+		{
+			int pid=Integer.parseInt(cid.getSelectedItem());
+			//System.out.println(""+pid);
+			stmt1=connection.createStatement();
+			ResultSet rs2=stmt1.executeQuery("select PNAME,PAGE,CNO,DOCTOR,DATE,TIME,REASON from PATIENT where PID='"+cid.getSelectedItem()+"'");
+			System.out.println(""+pid);
+			while(rs2.next())
+			{
+			String  name = rs2.getString(1);
+			System.out.println(name);
+	         String age  = rs2.getString(2);
+	         System.out.println(""+age);
+	         String cno= rs2.getString(3);
+	         System.out.println(""+cno);
+	         
+	         String doctor=rs2.getString(4);
+	         String date=rs2.getString(5);
+	         String time=rs2.getString(6);
+	         String reason=rs2.getString(7);
+	         
+	         pname.setText(name);
+	         page.setText(""+age);
+	         pcno.setText(""+cno);
+	         pdoctor.setText(doctor);
+	         pdoa.setText(date);
+	         ptoa.setText(time);
+	         prov.setText(reason);
+	         
+	         
+			}
+			
+	        rs2.close();
+				stmt1.close();
+				
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 
+cid.addItemListener(new ItemListener() {
+			
+			
+			public void itemStateChanged(ItemEvent arg0) {
+				try
+				{
+					int pid=Integer.parseInt(cid.getSelectedItem());
+					stmt1=connection.createStatement();
+					ResultSet rs2=stmt1.executeQuery("select PNAME,PAGE,CNO,DOCTOR,DATE,TIME,REASON from PATIENT where PID='"+cid.getSelectedItem()+"'");
+					System.out.println(""+pid);
+					while(rs2.next())
+					{
+					String  name = rs2.getString(1);
+					System.out.println(name);
+			         String age  = rs2.getString(2);
+			         System.out.println(""+age);
+			         String cno= rs2.getString(3);
+			         String doctor=rs2.getString(4);
+			         String date=rs2.getString(5);
+			         String time=rs2.getString(6);
+			         String reason=rs2.getString(7);
+			         
+			         pname.setText(name);
+			         page.setText(""+age);
+			         pcno.setText(""+cno);
+			         pdoctor.setText(doctor);
+			         pdoa.setText(date);
+			         ptoa.setText(time);
+			         prov.setText(reason);
+			         
+			         
+					}
+					
+			        rs2.close();
+						stmt1.close();
+						
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+				
+				}
+		});
+
+	}
+	private void setTitle(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void itemStateChanged(ItemEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}
 class HomePanel extends JPanel
 {
 	private BufferedImage image,image1;
@@ -730,6 +1447,75 @@ try {
 			   g.drawImage(image,650,100,650,375,null);
 			   
 			  }
+
+}
+class Generation extends JPanel
+{
+	JLabel username,hlabel;
+	JLabel password;
+	JLabel username1;
+	JLabel password1;
+	Register reg1;
+	JButton jb1;
+	Font f,f1;
+	private BufferedImage image,image1;
+
+	 Generation(String s)
+	 {
+		 reg1=new Register("");
+		 this.setTitle("Username-Password Generation");
+		 setLayout(null);
+		 
+		 f=new Font("Arial",Font.PLAIN,18);
+		 f1=new Font("Arial",Font.BOLD,30);
+		 setFont(f);
+		 setFont(f1);
+		 
+		hlabel=new JLabel("CONGRATULATIONS!");
+		 hlabel.setBounds(480,0,450,50);
+			hlabel.setFont(f1);
+			hlabel.setForeground(Color.BLUE);
+			add(hlabel);
+		// reg1.password();
+		 username=new JLabel("User Name:");
+		 username.setBounds(50, 20, 150, 50);username.setFont(f);
+		 
+		 username1=new JLabel();
+		// username1.setText("c_"+reg1.msg1);
+		 username1.setBounds(175, 20, 150, 50);username1.setFont(f);
+		 jb1=new JButton("OK");
+		 jb1.setBounds(200,200,70,30);
+		 jb1.setFont(f);
+		 
+		 add(jb1);
+		//username1=new JLabel("c_"+reg1.msg1);
+		
+		 password1=new JLabel();
+		 password=new JLabel("Password:");
+		 password.setBounds(50, 80, 150, 50);password.setFont(f);
+		// password1=new JLabel(""+reg1.msg2);
+		
+		// password1.setText(""+reg1.msg2);
+		 password1.setBounds(175, 80, 150, 50);password1.setFont(f);
+		 
+		 
+		 add(username); add(password); add(username1); add(password1);
+		 try {     
+			    image = ImageIO.read(new File("E:\\images\\i5.jpg"));
+			    
+			 } catch (IOException ex) {       }
+		
+			}
+private void setTitle(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+protected void paintComponent(Graphics g) {
+	  
+	   super.paintComponent(g);
+	   g.drawImage(image,650,100,650,375,null);
+	   
+	  }
 
 }
 public class Project2 {
