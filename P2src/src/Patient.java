@@ -164,15 +164,15 @@ class Patient extends JPanel implements ItemListener
 			//System.out.println(""+pid);
 			stmt1 = connection.createStatement();
 			ResultSet rs2 = stmt1.executeQuery("select PNAME,PAGE,CNO,DOCTOR,DATE,TIME,REASON from PATIENT where PID='"+cid.getSelectedItem()+"'");
-			System.out.println(""+pid);
+			//System.out.println(""+pid);
 			while(rs2.next())
 			{
 			String  name = rs2.getString(1);
-			System.out.println(name);
+			//System.out.println(name);
 	         String age = rs2.getString(2);
-	         System.out.println(""+age);
+	         //System.out.println(""+age);
 	         String cno = rs2.getString(3);
-	         System.out.println(""+cno);
+	         //System.out.println(""+cno);
 	         
 	         String doctor = rs2.getString(4);
 	         String date = rs2.getString(5);

@@ -1,15 +1,25 @@
 import java.awt.Choice;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 public class Pharmacy extends JPanel implements ItemListener 
 {
@@ -17,11 +27,10 @@ public class Pharmacy extends JPanel implements ItemListener
 		Choice cid;
 		
 		 Connection connection = null;
-		 Statement stmt = null, stmt1 = null;
+		 Statement stmt = null, stmt1 = null, getquantity = null;
 		
 		Font f,f1,f2;
 		BufferedImage image,image1;
-		
 	
 		{
 			setLayout(null);
@@ -30,6 +39,78 @@ public class Pharmacy extends JPanel implements ItemListener
 			f1 = new Font("Arial",Font.PLAIN,25);
 			f2 = new Font("Arial",Font.PLAIN,18);
 			connection= SqliteConnection.dbConnector();
+			
+		
+			//condition for popup
+			try 
+			{
+				getquantity = connection.createStatement();
+				ResultSet rsquantity = getquantity.executeQuery("select MNAME,QUANTITY from PHARMACY where QUANTITY <= 100;");
+				
+				while(rsquantity.next())
+				{
+					String name = rsquantity.getString(1);
+					System.out.println(name);
+					String quan  = rsquantity.getString(2);
+					System.out.println(quan);
+				}
+				rsquantity.close();
+				getquantity.close();
+			} 
+			
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+			//notification for low quantity
+			String msg = "Hello";
+			String header = "LOW QUANTITY ALERT";
+			JDialog frame = new JDialog();
+			//frame.setModal(true);
+			frame.setSize(300,125);
+			frame.setUndecorated(true);
+			frame.setLayout(new GridBagLayout());
+			GridBagConstraints constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			constraints.weightx = 1.0f;
+			constraints.weighty = 1.0f;
+			constraints.insets = new Insets(5, 5, 5, 5);
+			constraints.fill = GridBagConstraints.BOTH;
+			JLabel headingLabel = new JLabel(header);
+			//headingLabel .setIcon(headingIcon); // --- use image icon you want to be as heading image.
+			headingLabel.setOpaque(false);
+			frame.add(headingLabel, constraints);
+			constraints.gridx++;
+			constraints.weightx = 0f;
+			constraints.weighty = 0f;
+			constraints.fill = GridBagConstraints.NONE;
+			constraints.anchor = GridBagConstraints.NORTH;
+			
+			JButton closeButton = new JButton(new AbstractAction("X") 
+			{
+				public void actionPerformed(final ActionEvent e)
+				{
+					frame.dispose();
+				}
+			});
+			
+			closeButton.setMargin(new Insets(1, 4, 1, 4));
+			closeButton.setFocusable(false);
+			frame.add(closeButton, constraints);
+			constraints.gridx = 0;
+			constraints.gridy++;
+			constraints.weightx = 1.0f;
+			constraints.weighty = 1.0f;
+			constraints.insets = new Insets(5, 5, 5, 5);
+			constraints.fill = GridBagConstraints.BOTH;
+			JLabel messageLabel = new JLabel(msg);
+			frame.add(messageLabel, constraints);
+			frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+			frame.setVisible(true);
+
+		
+			//end pop up
 			
 			
 			title = new JLabel("PHARMACY");
@@ -82,7 +163,7 @@ public class Pharmacy extends JPanel implements ItemListener
 			msupplier.setFont(f1);
 			add(msupplier);
 			
-			//exception handling
+
 			try
 			{
 				stmt = connection.createStatement();
@@ -103,22 +184,23 @@ public class Pharmacy extends JPanel implements ItemListener
 				e.printStackTrace();
 			}
 			cid.select(0);
+			
+			
 			try
 			{
 				int mid=Integer.parseInt(cid.getSelectedItem());
-				//System.out.println(""+pid);
+
 				stmt1 = connection.createStatement();
 				ResultSet rs2 = stmt1.executeQuery("select MNAME,QUANTITY,SUPPLIER,PID from PHARMACY where MID='"+cid.getSelectedItem()+"'");
-				System.out.println(""+mid);
+				//System.out.println(""+mid);
 				while(rs2.next())
 				{
 				String  name = rs2.getString(1);
-				System.out.println(name);
+
 		         String quantity  = rs2.getString(2);
-		         System.out.println(""+quantity);
+
 		         String supplier = rs2.getString(3);
-		         System.out.println(""+supplier);
-		         
+
 		         
 		         mname.setText(name);
 		         mquantity.setText(""+quantity);
@@ -145,13 +227,13 @@ public class Pharmacy extends JPanel implements ItemListener
 						int mid = Integer.parseInt(cid.getSelectedItem());
 						stmt1 = connection.createStatement();
 						ResultSet rs2=stmt1.executeQuery("select MNAME,QUANTITY,SUPPLIER,PID from PHARMACY where MID='"+cid.getSelectedItem()+"'");
-						System.out.println(""+mid);
+						//System.out.println(""+mid);
 						while(rs2.next())
 						{
 						String  name = rs2.getString(1);
-						System.out.println(name);
+						//System.out.println(name);
 				         String quantity  = rs2.getString(2);
-				         System.out.println(""+quantity);
+				         //System.out.println(""+quantity);
 				         String supplier= rs2.getString(3);
 				         
 				         mname.setText(name);
@@ -172,6 +254,7 @@ public class Pharmacy extends JPanel implements ItemListener
 		});
 
 		}
+
 		private void setTitle(String string) 
 		{
 			// TODO Auto-generated method stub

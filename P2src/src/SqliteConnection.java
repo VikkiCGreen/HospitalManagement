@@ -11,7 +11,7 @@ public class SqliteConnection
 		{
 			Class.forName("org.sqlite.JDBC");
 			Connection conn= DriverManager.getConnection("jdbc:sqlite:SEPROJECT.sqlite");
-			System.out.println("Connected to Database Successfully");
+			//System.out.println("Connected to Database Successfully");
 			return conn;
 		}
 		catch(Exception e)
