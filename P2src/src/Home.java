@@ -1,3 +1,5 @@
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -29,8 +31,7 @@ class Home extends JFrame implements ActionListener,KeyListener,TableModelListen
 	{
 		connection = SqliteConnection.dbConnector();
 		this.setTitle("Hospital Management System");
-		jp = new HomePanel();
-		
+		jp = new HomePanel();	
 		jp.b1.addActionListener(this);
 		jp.b2.addActionListener(this);
 		jp.b3.addActionListener(this);
@@ -40,8 +41,6 @@ class Home extends JFrame implements ActionListener,KeyListener,TableModelListen
 		
 		tp = new TabPan1();
 		tp.setBounds(0,0,1500,1000);
-		//tp.b1.addActionListener(this);
-		//tp.b2.addActionListener(this);
 		tp.setVisible(false);
 		
 		jp.setBounds(0,0,1500,1000);
@@ -63,7 +62,6 @@ class Home extends JFrame implements ActionListener,KeyListener,TableModelListen
 			
 			gen = new Generation("");
 			gen.setBounds(0,0,1500,1000);
-			//gen.b1.addActionListener(this);
 			gen.setVisible(false);
 		
 			gen.jb1.addActionListener(this);
@@ -237,7 +235,6 @@ class Home extends JFrame implements ActionListener,KeyListener,TableModelListen
 					 for(int i = 0; i < m.length(); i++)
 					 {
 						int a = (m.charAt(i));
-						// System.out.println(a);
 						if(a < 48 || a > 57)
 						{  
 							reg.val4.setVisible(false);
@@ -245,7 +242,6 @@ class Home extends JFrame implements ActionListener,KeyListener,TableModelListen
 							 reg.val1.setVisible(false);
 							 reg.val2.setVisible(false);
 							 reg.val3.setVisible(false);
-						//	 gen.setVisible(false);
 							 f5=1;
 						}
 						
@@ -268,7 +264,6 @@ class Home extends JFrame implements ActionListener,KeyListener,TableModelListen
 					 for(int i = 0; i < n.length(); i++)
 					 {
 						int a = (n.charAt(i));
-						// System.out.println(a);
 						if(a >= 48 && a <= 57)
 						{  
 							reg.val4.setVisible(false);
@@ -276,7 +271,6 @@ class Home extends JFrame implements ActionListener,KeyListener,TableModelListen
 							 reg.val1.setVisible(false);
 							 reg.val2.setVisible(true);
 							 reg.val3.setVisible(false);
-						//	 gen.setVisible(false);
 							 f5=1;
 						}
 						
@@ -307,10 +301,7 @@ class Home extends JFrame implements ActionListener,KeyListener,TableModelListen
 			       	  	 } 
 			        	 
 			        	 String s2 = reg.c2.getSelectedItem();
-			    	     // System.out.println(s2);
 						String msg2 = reg.c2.getSelectedItem() + msg1 + reg.c3.getSelectedItem();
-						//System.out.println("user:"+msg1);
-						//System.out.println("user:"+msg2);
 						gen.username1.setText(msg1);
 						gen.password1.setText(msg2);
 						String sql = "INSERT INTO REGISTER(NAME,DOB,ADDRESS,GENDER,CNO,TYPE,UNAME,PASSWORD) VALUES(?,?,?,?,?,?,?,?)"; 
@@ -335,9 +326,7 @@ class Home extends JFrame implements ActionListener,KeyListener,TableModelListen
 			   		 gen.setVisible(true);
 				    
 				     System.out.println("hi"); 
-			         }
-					
-				        
+			         }     
 	 	
 				 }
 				 catch(Exception e)

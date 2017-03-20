@@ -2,8 +2,10 @@ import java.awt.Checkbox;
 import java.awt.CheckboxGroup;
 import java.awt.Choice;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -43,8 +45,9 @@ public class Project2 {
 
 	public static void main(String[] args)
 	{
-		Home h=new Home();
-		h.setVisible(true);
+		Home h = new Home();	
 		h.setSize(1500,1000);
+		h.setLocationRelativeTo(null);
+		h.setVisible(true);
 	}
 }

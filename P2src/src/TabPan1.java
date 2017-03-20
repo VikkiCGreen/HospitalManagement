@@ -5,9 +5,13 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 class TabPan1 extends JPanel implements ActionListener,KeyListener 
 {
+	
+	private static final long serialVersionUID = 1L;
 	JTabbedPane jtp1 = null;
 	Appt a = null;
 	Patient p = null;
@@ -30,6 +34,17 @@ class TabPan1 extends JPanel implements ActionListener,KeyListener
 		jtp1.addTab("DOCTOR APPOINTMENTS",d);
 		jtp1.addTab("PHARMACY", pharmacy);
 		add(jtp1);
+		
+		//gets executed when tab is switched
+		jtp1.addChangeListener(new ChangeListener() {
+	        public void stateChanged(ChangeEvent e) {
+
+	        	//gets executed when pharmacy tab is selected
+	        	if(jtp1.getTitleAt(jtp1.getSelectedIndex()).equals("PHARMACY")) {
+	        		pharmacy.resupplyWindow();
+	        	}
+	        }
+	    });
 	}
 	
 	private void setDefaultCloseOperation(int exitOnClose) 
