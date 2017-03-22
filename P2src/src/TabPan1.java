@@ -1,3 +1,4 @@
+package javamyproject;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -17,7 +18,7 @@ class TabPan1 extends JPanel implements ActionListener,KeyListener
 	Patient p = null;
 	Doctor d = null;
 	Pharmacy pharmacy = null;
-	
+	Invoice invoice = null;
 	TabPan1() 
 	{
 		setLayout(null);
@@ -26,6 +27,7 @@ class TabPan1 extends JPanel implements ActionListener,KeyListener
 		p = new Patient();
 		d = new Doctor();
 		pharmacy = new Pharmacy();
+		invoice = new Invoice();
 		jtp1.setBounds(0,0,1500,1000);
 		a.setBounds(0,0,1500,1000);
 		p.setBounds(0,0,1500,1000);
@@ -33,6 +35,7 @@ class TabPan1 extends JPanel implements ActionListener,KeyListener
 		jtp1.addTab("PATIENT INFO",p);
 		jtp1.addTab("DOCTOR APPOINTMENTS",d);
 		jtp1.addTab("PHARMACY", pharmacy);
+		jtp1.addTab("INVOICE", invoice);
 		add(jtp1);
 		
 		//gets executed when tab is switched
