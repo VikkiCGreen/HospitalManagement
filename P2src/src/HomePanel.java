@@ -42,6 +42,11 @@ class HomePanel extends JPanel
 			tf2 = new JPasswordField(30);
 			tf1.setText("");
 			tf2.setText("");
+			//TODO take out
+			tf1.setText("admin");
+			tf2.setText("admin");
+			//
+			
 			head = new JLabel("WELCOME");
 			head.setBounds(525,0,350,50);
 				

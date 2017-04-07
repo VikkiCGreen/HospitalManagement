@@ -38,7 +38,7 @@ class Patient extends JPanel implements ItemListener
 		title.setForeground(Color.BLUE);
 		add(title);
 		
-		id = new JLabel("Patient Id:");
+		id = new JLabel("Patient ID:");
 		id.setBounds(50,50,200,50);
 		id.setFont(f1);
 		add(id);
@@ -83,15 +83,6 @@ class Patient extends JPanel implements ItemListener
 		rov.setFont(f1);
 		add(rov);
 		
-		/*
-		reset=new JButton("Reset");
-		reset.setBounds(175, 350, 200,40);reset.setFont(f);
-		add(reset);
-		
-		id1=new JTextField();
-		id1.setBounds(300,60,200,40);
-		add(id1);
-		*/
 		cid = new Choice();
 		cid.setBounds(300,55,150,40);
 		cid.setFont(f1);
@@ -165,28 +156,27 @@ class Patient extends JPanel implements ItemListener
 			ResultSet rs2 = stmt1.executeQuery("select PNAME,PAGE,CNO,DOCTOR,DATE,TIME,REASON from PATIENT where PID='"+cid.getSelectedItem()+"'");
 			while(rs2.next())
 			{
-			String  name = rs2.getString(1);
-	         String age = rs2.getString(2);
-	         String cno = rs2.getString(3);
-	         
-	         String doctor = rs2.getString(4);
-	         String date = rs2.getString(5);
-	         String time = rs2.getString(6);
-	         String reason = rs2.getString(7);
-	         
-	         pname.setText(name);
-	         page.setText(""+age);
-	         pcno.setText(""+cno);
-	         pdoctor.setText(doctor);
-	         pdoa.setText(date);
-	         ptoa.setText(time);
-	         prov.setText(reason);
+				String  name = rs2.getString(1);
+		        String age = rs2.getString(2);
+		        String cno = rs2.getString(3);
+		        String doctor = rs2.getString(4);
+		        String date = rs2.getString(5);
+		        String time = rs2.getString(6);
+		        String reason = rs2.getString(7);
+		        
+		        pname.setText(name);
+		        page.setText(""+age);
+		        pcno.setText(""+cno);
+		        pdoctor.setText(doctor);
+		        pdoa.setText(date);
+		        ptoa.setText(time);
+		        prov.setText(reason);
 	         
 	         
 			}
 			
 	        rs2.close();
-				stmt1.close();
+			stmt1.close();
 				
 		}
 		catch(Exception e)
