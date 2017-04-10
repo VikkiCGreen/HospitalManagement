@@ -17,6 +17,7 @@ class TabPan1 extends JPanel implements ActionListener,KeyListener
 	Appt a = null;
 	Patient p = null;
 	Doctor d = null;
+	//Pharmacy pharmacy = null;
 	Pharmacy pharmacy = null;
 	Invoice invoice = null;
 	TabPan1() 
@@ -26,6 +27,7 @@ class TabPan1 extends JPanel implements ActionListener,KeyListener
 		a = new Appt();
 		p = new Patient();
 		d = new Doctor();
+		//pharmacy = new Pharmacy();
 		pharmacy = new Pharmacy();
 		invoice = new Invoice();
 		jtp1.setBounds(0,0,1500,1000);
@@ -34,6 +36,7 @@ class TabPan1 extends JPanel implements ActionListener,KeyListener
 		jtp1.addTab("SCHEDULE APPOINTMENT",a);
 		jtp1.addTab("PATIENT INFO",p);
 		jtp1.addTab("DOCTOR APPOINTMENTS",d);
+		//jtp1.addTab("PHARMACY", pharmacy);
 		jtp1.addTab("PHARMACY", pharmacy);
 		jtp1.addTab("INVOICE", invoice);
 		add(jtp1);
@@ -44,6 +47,7 @@ class TabPan1 extends JPanel implements ActionListener,KeyListener
 
 	        	//gets executed when pharmacy tab is selected
 	        	if(jtp1.getTitleAt(jtp1.getSelectedIndex()).equals("PHARMACY")) {
+	        		//pharmacy.resupplyWindow();
 	        		pharmacy.resupplyWindow();
 	        	}
 	        }
