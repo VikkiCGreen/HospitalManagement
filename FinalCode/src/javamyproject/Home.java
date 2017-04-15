@@ -249,12 +249,12 @@ class Home extends JFrame implements ActionListener,KeyListener,MouseListener
 				 {
 					 if(tp.pa.tf.getText().equals(""))
 					 {
-						 tp.pa.qty.setVisible(true);
+						 tp.pa.quantity.setVisible(true);
 					 }
-					 else
-					 {
-						 tp.pa.qty.setVisible(false);
-					 }
+//					 else
+//					 {
+//						 tp.pa.quantity.setVisible(false);
+//					 }
 				 }
 				 catch(Exception e)
 				 {

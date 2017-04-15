@@ -35,6 +35,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
@@ -72,7 +74,20 @@ class TabPan1 extends JPanel
 		jtp1.addTab("PHARMACY",pa);
 		jtp1.addTab("INVOICE",i);
 		add(jtp1);
+		
+		//gets executed when tab is switched
+				jtp1.addChangeListener(new ChangeListener() {
+			        public void stateChanged(ChangeEvent e) {
+
+			        	//gets executed when pharmacy tab is selected
+			        	if(jtp1.getTitleAt(jtp1.getSelectedIndex()).equals("PHARMACY")) {
+			        		//pharmacy.resupplyWindow();
+			        		pa.resupplyWindow();
+			        	}
+			        }
+			    });
 	}
+	
 	private void setDefaultCloseOperation(int exitOnClose) {
 		// TODO Auto-generated method stub
             System.exit(0);

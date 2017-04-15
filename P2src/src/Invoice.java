@@ -1,4 +1,4 @@
-package javamyproject;
+
 import java.awt.Checkbox;
 import java.awt.CheckboxGroup;
 import java.awt.Choice;

@@ -11,7 +11,6 @@ public class SqliteConnection {
 		{
 			Class.forName("org.sqlite.JDBC");
 			Connection conn= DriverManager.getConnection("jdbc:sqlite:SEPROJECT.sqlite");
-			System.out.println("Connected Successfully karan");
 			return conn;
 		}
 		catch(Exception e)
@@ -20,9 +19,4 @@ public class SqliteConnection {
 		return null;
 		}
 	}
-
-	/**
-	 * @param args
-	 */
-	
 }

@@ -40,21 +40,16 @@ import javax.swing.event.TableModelListener;
 
 import org.sqlite.SQLiteConnection;
 
-
 public class Project2 {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Home h=new Home();
-		h.setVisible(true);
+		
+		Home h = new Home();	
 		h.setSize(1500,1000);
-		
-		
+		h.setLocationRelativeTo(null);
+		h.setVisible(true);
 	}
-	}
+}
 
 
 

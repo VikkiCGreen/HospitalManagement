@@ -180,7 +180,7 @@ c1.addItemListener(new ItemListener() {
 						data[i][1]=""+b;
 						
 						data[i][2]=""+c;
-						data[i][3]=""+d;
+						data[i][3]="$"+d;
 						
 						System.out.println(""+data[i][0]+" "+data[i][1]+" "+data[i][2]+" "+data[i][3]);
 					     i++;
@@ -220,7 +220,7 @@ c1.addItemListener(new ItemListener() {
 					stmt1.close();
 					rs3.close();
 					stmt3.close();
-					subtotal1.setText(""+tot);
+					subtotal1.setText("$"+tot);
 					
 					
 				}
