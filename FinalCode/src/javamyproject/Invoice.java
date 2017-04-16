@@ -121,9 +121,6 @@ class Invoice extends JPanel implements ItemListener
 		subtotal1.setBounds(525,600,100,50);
 		subtotal1.setFont(f1);
 		add(subtotal1);
-		
-		
-		
 	
 		
 		
@@ -181,8 +178,6 @@ c1.addItemListener(new ItemListener() {
 						
 						data[i][2]=""+c;
 						data[i][3]="$"+d;
-						
-						System.out.println(""+data[i][0]+" "+data[i][1]+" "+data[i][2]+" "+data[i][3]);
 					     i++;
 					}
 					
@@ -209,7 +204,6 @@ c1.addItemListener(new ItemListener() {
 					stmt1=connection.createStatement();
 					stmt3=connection.createStatement();
 					String b=c1.getSelectedItem();
-					//System.out.println(b);
 					rs1=stmt1.executeQuery("select CNO from PATIENT where PID='"+c1.getSelectedItem()+"'");
 					rs3=stmt3.executeQuery("select PNAME from PATIENT where PID='"+c1.getSelectedItem()+"'");
 					String a=rs1.getString(1);
@@ -249,7 +243,6 @@ textarea1.setFont(f4);
 textarea1.setBounds(100,150,180,450);
 
 add(textarea1);
-//System.out.println("test3");
  textarea2.setText("");
  textarea2.setBackground(aColor);
  textarea2.setFont(f4);
@@ -262,7 +255,6 @@ add(textarea1);
  textarea3.setBounds(410,150,130,450);
  add(textarea3);
 	
- System.out.println("test3");
  textarea4.setText("");
  textarea4.setBackground(aColor);
  textarea4.setFont(f4);

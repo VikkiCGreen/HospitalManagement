@@ -65,7 +65,6 @@ class Background extends JPanel
 		jl=new JLabel();
 		jl.setBounds(0,0,1500,800);
 		add(jl);
-		//System.out.println("k2");
 		
 		
 		
@@ -75,7 +74,6 @@ class Background extends JPanel
 			{
 				while(true)
 				{
-		//	System.out.println("k1");
 					try
 					{
 					Thread.sleep(1000);				

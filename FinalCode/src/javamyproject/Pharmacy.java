@@ -14,6 +14,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,6 +24,7 @@ import java.sql.Statement;
 import java.text.NumberFormat;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -163,6 +166,14 @@ public class Pharmacy extends JPanel implements ItemListener
 			purchase.setBounds(300,400,100,50);
 			purchase.setFont(f1);
 			add(purchase);
+			//image
+			try {
+				image = ImageIO.read(new File("E:\\images\\i9.jpg"));
+			
+			}
+			catch (IOException ex){ 
+				
+			}
 			
 			purchase.addActionListener(new ActionListener() {
 				
@@ -370,8 +381,11 @@ public class Pharmacy extends JPanel implements ItemListener
 			//notification for low quantity
 			String msg = "<html>" + name + " needs resupply! <br>Current quantity: " + quan + 
 					"<br><font color=\"red\">Please enter a number to reorder. </font></html>";
+			String errorMessage = "<html><font color=\"red\">Please Resupply > 300</font></html>";
 			String header = "<html><font color=\"red\">LOW QUANTITY ALERT</font></html>";
 			JTextField jtf = new JTextField(10);
+			JLabel errorLabel = new JLabel(errorMessage);
+				
 			JDialog frame = new JDialog();
 			JButton button1 = new JButton();
 			button1.setText("Submit");
@@ -381,46 +395,53 @@ public class Pharmacy extends JPanel implements ItemListener
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					
-					int oldValue = 0;
-					for(String medName : fields.keySet())
-					{
-						if(medName.equals(name))
+					if(Integer.parseInt(jtf.getText()) + Integer.parseInt(mquantity.getText()) <= 300) {
+						
+						JOptionPane.showMessageDialog(frame,
+							    "Order Must Exceed 300, Please enter another number.");
+					}
+					else {
+						int oldValue = 0;
+						for(String medName : fields.keySet())
 						{
-							
-							String strValue = fields.get(medName).getText();
-							
-							int value = Integer.parseInt(strValue);
-							
-							//TODO maybe make it from MID
-							try {
-								ResultSet rsquantity = getquantity.executeQuery("SELECT QUANTITY from PHARMACY where MNAME='" + name + "'");
-								while(rsquantity.next())
-								{
-									oldValue = rsquantity.getInt(1);
-								}
-							} catch (SQLException e2) {
-								// TODO Auto-generated catch block
-								e2.printStackTrace();
-							}
-							
-							int newValue = oldValue + value;
-							
-							if(mname.getText().equals(name))
+							if(medName.equals(name))
 							{
-								mquantity.setText(String.valueOf(newValue));
-							}
-							
-							String query = "UPDATE PHARMACY SET QUANTITY=" + newValue + " where MNAME='" + name + "'";
-							try {
-								PreparedStatement pst1 = connection.prepareStatement(query);
-								pst1.execute();
-								pst1.close();
-							} catch (SQLException e1) {
 								
-								e1.printStackTrace();
+								String strValue = fields.get(medName).getText();
+								
+								int value = Integer.parseInt(strValue);
+								
+								//TODO maybe make it from MID
+								try {
+									ResultSet rsquantity = getquantity.executeQuery("SELECT QUANTITY from PHARMACY where MNAME='" + name + "'");
+									while(rsquantity.next())
+									{
+										oldValue = rsquantity.getInt(1);
+									}
+								} catch (SQLException e2) {
+									// TODO Auto-generated catch block
+									e2.printStackTrace();
+								}
+								
+								int newValue = oldValue + value;
+								
+								if(mname.getText().equals(name))
+								{
+									mquantity.setText(String.valueOf(newValue));
+								}
+								
+								String query = "UPDATE PHARMACY SET QUANTITY=" + newValue + " where MNAME='" + name + "'";
+								try {
+									PreparedStatement pst1 = connection.prepareStatement(query);
+									pst1.execute();
+									pst1.close();
+								} catch (SQLException e1) {
+									
+									e1.printStackTrace();
+								}
+								//closes window after
+								frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 							}
-							//closes window after
-							frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 						}
 					}
 				}

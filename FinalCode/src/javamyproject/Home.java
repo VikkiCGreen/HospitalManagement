@@ -207,12 +207,12 @@ class Home extends JFrame implements ActionListener,KeyListener,MouseListener
 
 	public void actionPerformed(ActionEvent ae) {
 		// TODO Auto-generated method stub
-		String s=ae.getActionCommand();
+		String s = ae.getActionCommand();
 		 shortcut(s);
 		 }	 
 		 void shortcut(String s)
 		 {
-			 int f5=0;
+			 int f5 = 0;
 			 if(s.equals("Login"))
 			 {
 				 String uname=jp.tf1.getText();
@@ -251,10 +251,6 @@ class Home extends JFrame implements ActionListener,KeyListener,MouseListener
 					 {
 						 tp.pa.quantity.setVisible(true);
 					 }
-//					 else
-//					 {
-//						 tp.pa.quantity.setVisible(false);
-//					 }
 				 }
 				 catch(Exception e)
 				 {
@@ -264,38 +260,31 @@ class Home extends JFrame implements ActionListener,KeyListener,MouseListener
 	        	try{
 	        		 try
 	        		 {
-	        			 x=Integer.parseInt(tp.pa.tf.getText());
+	        			 x = Integer.parseInt(tp.pa.tf.getText());
 	        		 }
 	        		 catch(Exception e)
 	        		 {
 	        			 e.printStackTrace();
 	        		 }
-	  	           y=Integer.parseInt(tp.pa.mquantity.getText());
-	           if(x>y)
+	  	           y = Integer.parseInt(tp.pa.mquantity.getText());
+	           if(x > y)
 	        		   {
 	        			   tp.pa.qerr.setVisible(true);
 	        		   }
 	           else
 	           {
 	        	   tp.pa.qerr.setVisible(false);
-	        	   q=1;
-	        	  z=y-x;
-	              if(z<=10)// Alertbox code will be here
-	              {
-	            	  z=z+50;
-	              }
-	        	  System.out.println(z);
-	        	  tp.pa.tf.setText("");
-	        	  tp.pa.mquantity.setText(""+z);
+	        	   q = 1;
+	        	   z = y - x;
+	        	   tp.pa.tf.setText("");
+	        	   tp.pa.mquantity.setText("" + z);
 	           }
 	           
-	           if(q==1)
+	           if(q == 1)
 	           {
-	        	   System.out.println(z);
-	        	   String sql = "UPDATE PHARMACY SET QUANTITY= "+z+" where MID='"+tp.pa.cid.getSelectedItem()+"'"; 
+	        	    String sql = "UPDATE PHARMACY SET QUANTITY= " + z + " where MID='"+tp.pa.cid.getSelectedItem()+"'"; 
 					stmt= connection.createStatement();
 					stmt.executeUpdate(sql);
-					 System.out.println("World");
 					stmt.close(); 
 					String sql1 = "INSERT INTO INVOICE(MID,MNAME,QUANTITY,SUPPLIER,PRICE,PID,TOTAL) VALUES(?,?,?,?,?,?,?)"; 
 					PreparedStatement pst1= connection.prepareStatement(sql1);
@@ -303,13 +292,12 @@ class Home extends JFrame implements ActionListener,KeyListener,MouseListener
 					pst1.setString(2,tp.pa.mname.getText());
 					pst1.setInt(3,x);
 					pst1.setString(4,tp.pa.msupplier.getText());
-				   pst1.setString(5, tp.pa.mprice.getText());
+				    pst1.setString(5, tp.pa.mprice.getText());
 				    pst1.setString(6,tp.pa.cpid.getSelectedItem());
-				    int pri= Integer.parseInt(tp.pa.mprice.getText());
-				    int total= x*pri;
+				    int pri= Integer.parseInt(tp.pa.mprice.getText().substring(1));
+				    int total= x * pri;
 				    
 				    pst1.setInt(7, total);
-				  //  pst1.setString(8, msg2);
 					
 			     pst1.execute();
 			     pst1.close();
@@ -362,13 +350,10 @@ class Home extends JFrame implements ActionListener,KeyListener,MouseListener
 				
 				 try
 				 {
-					 System.out.println("Hello");
 					 String doctor=tp.a.cdo.getSelectedItem();
-					 System.out.println(doctor);
 					 String sql = "UPDATE PATIENT SET Doctor='"+tp.a.cdo.getSelectedItem()+"',Date='"+tp.a.c1.getSelectedItem()+"-"+tp.a.c2.getSelectedItem()+"-"+tp.a.c3.getSelectedItem()+"',Time='"+tp.a.c4.getSelectedItem()+"',Reason='"+tp.a.c5.getSelectedItem()+"' where PID='"+tp.a.cid.getSelectedItem()+"'"; 
 						stmt= connection.createStatement();
 						stmt.executeUpdate(sql);
-						 System.out.println("World");
 						stmt.close();
 						
 						
@@ -402,7 +387,6 @@ class Home extends JFrame implements ActionListener,KeyListener,MouseListener
 					 for(int i=0;i<m.length();i++)
 					 {
 						int a=(m.charAt(i));
-						// System.out.println(a);
 						if(a<48 || a>57)
 						{  
 							reg.val4.setVisible(false);
@@ -410,7 +394,6 @@ class Home extends JFrame implements ActionListener,KeyListener,MouseListener
 							 reg.val1.setVisible(false);
 							 reg.val2.setVisible(false);
 							 reg.val3.setVisible(false);
-						//	 gen.setVisible(false);
 							 f5=1;
 						}
 						
@@ -433,7 +416,6 @@ class Home extends JFrame implements ActionListener,KeyListener,MouseListener
 					 for(int i=0;i<n.length();i++)
 					 {
 						int a=(n.charAt(i));
-						// System.out.println(a);
 						if(a>=48 && a<=57)
 						{  
 							reg.val4.setVisible(false);
@@ -441,7 +423,6 @@ class Home extends JFrame implements ActionListener,KeyListener,MouseListener
 							 reg.val1.setVisible(false);
 							 reg.val2.setVisible(true);
 							 reg.val3.setVisible(false);
-						//	 gen.setVisible(false);
 							 f5=1;
 						}
 						
@@ -470,10 +451,7 @@ class Home extends JFrame implements ActionListener,KeyListener,MouseListener
 			       		  reg.val1.setVisible(true);
 			       	  } 
 			        	 String s2=reg.c2.getSelectedItem();
-			    	     // System.out.println(s2);
 						String msg2=reg.c2.getSelectedItem()+msg1+reg.c3.getSelectedItem();
-						//System.out.println("user:"+msg1);
-						//System.out.println("user:"+msg2);
 						gen.username1.setText(msg1);
 						gen.password1.setText(msg2);
 						String sql = "INSERT INTO REGISTER(NAME,DOB,ADDRESS,GENDER,CNO,TYPE,UNAME,PASSWORD) VALUES(?,?,?,?,?,?,?,?)"; 
@@ -498,12 +476,10 @@ class Home extends JFrame implements ActionListener,KeyListener,MouseListener
 				     reg.ta.setText("");
 				     reg.tf2.setText("");
 				     reg.age.setVisible(false);
-				     reg.c1.select(0);
-				    
+				     reg.c1.select(0);  
 				     reg.c3.select(0);
 				    
-				    
-				     System.out.println("hi"); 
+			
 			         }
 					
 				        

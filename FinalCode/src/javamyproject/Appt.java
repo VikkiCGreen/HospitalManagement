@@ -237,16 +237,12 @@ class Appt extends JPanel implements KeyListener, ItemListener
 		try
 		{
 			int pid=Integer.parseInt(cid.getSelectedItem());
-			//System.out.println(""+pid);
 			stmt1=connection.createStatement();
 			ResultSet rs2=stmt1.executeQuery("select PNAME,PAGE from PATIENT where PID='"+cid.getSelectedItem()+"'");
-			System.out.println(""+pid);
 			while(rs2.next())
 			{
 			String  name = rs2.getString(1);
-			System.out.println(name);
 	         String age  = rs2.getString(2);
-	         System.out.println(""+age);
 	         pname.setText(name);
 	         page.setText(""+age);
 			}
@@ -266,19 +262,14 @@ cid.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
 				
 				int pid=Integer.parseInt(cid.getSelectedItem());
-				//System.out.println(""+pid);
 				try
 				{
-					System.out.println("hi");
 					stmt1=connection.createStatement();
 					ResultSet rs2=stmt1.executeQuery("select PNAME,PAGE from PATIENT where PID='"+cid.getSelectedItem()+"'");
 					while(rs2.next())
 					{
-					System.out.println(""+pid);
 					String  name = rs2.getString(1);
-					System.out.println(name);
 			         String age  = rs2.getString(2);
-			        System.out.println(""+age);
 			         pname.setText(name);
 			         page.setText(""+age);
 					}
@@ -329,7 +320,6 @@ try {
 			else if(val1%4==0 && val.equalsIgnoreCase("feb") )
 			{
 							
-				System.out.println("LEAP");
 					for(int i=1;i<=29;i++)
 					{
 					c2.add(""+i);
@@ -339,8 +329,6 @@ try {
 			else if(val1%4!=0 && val.equalsIgnoreCase("feb"))
 			{
 				
-				
-				System.out.println("Not LEAP");
 					for(int i=1;i<=28;i++)
 					{
 					c2.add(""+i);

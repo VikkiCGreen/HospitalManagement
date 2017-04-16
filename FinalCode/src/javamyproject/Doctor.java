@@ -155,7 +155,6 @@ c1.addItemListener(new ItemListener() {
 						data[i][2]=""+c;
 						data[i][3]=""+d;
 						
-						System.out.println(""+data[i][0]+" "+data[i][1]+" "+data[i][2]+" "+data[i][3]);
 					     i++;
 					}
 					
@@ -181,7 +180,6 @@ c1.addItemListener(new ItemListener() {
 					  textarea4.setText(ef);
 					stmt1=connection.createStatement();
 					String b=c1.getSelectedItem();
-					System.out.println(b);
 					rs1=stmt1.executeQuery("select CNO from REGISTER where NAME='"+c1.getSelectedItem()+"'");
 					String a=rs1.getString(1);
 					dcno.setText(""+a);
@@ -214,7 +212,6 @@ textarea1.setFont(f4);
 textarea1.setBounds(100,150,180,450);
 
 add(textarea1);
-//System.out.println("test3");
  textarea2.setText("");
  textarea2.setBackground(aColor);
  textarea2.setFont(f4);
@@ -226,8 +223,6 @@ add(textarea1);
  textarea3.setFont(f4);
  textarea3.setBounds(410,150,130,450);
  add(textarea3);
-	
- System.out.println("test3");
  textarea4.setText("");
  textarea4.setBackground(aColor);
  textarea4.setFont(f4);

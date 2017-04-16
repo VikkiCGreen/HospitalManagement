@@ -81,7 +81,6 @@ class TabPan1 extends JPanel
 
 			        	//gets executed when pharmacy tab is selected
 			        	if(jtp1.getTitleAt(jtp1.getSelectedIndex()).equals("PHARMACY")) {
-			        		//pharmacy.resupplyWindow();
 			        		pa.resupplyWindow();
 			        	}
 			        }
